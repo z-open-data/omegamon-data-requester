@@ -25,6 +25,8 @@ export function findEnumValue(enumMap: EnumMap, value: string | number): string 
 }
 
 export type Unit = (typeof TIME_UNITS)[number] | (typeof UNCATEGORISED_UNITS)[number];
+export const RESTRICTED_COLUMN_USAGE = ['info', 'hidden', 'reserved'] as const;
+type Usage = (typeof RESTRICTED_COLUMN_USAGE)[number];
 
 export interface ColumnMetadata {
   id: string; //columnIdentifier
@@ -44,7 +46,7 @@ export interface ColumnMetadata {
   enums?: EnumMap; //displayHints
   extensions: Record<string, string>; // See example below
   unit?: Unit;
-  usage?: string;
+  usage?: Usage;
 }
 
 export const WRITETIME_COLUMN_ID = 'WRITETIME';

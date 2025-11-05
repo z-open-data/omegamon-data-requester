@@ -17,7 +17,6 @@ export interface TableMetadata {
 
   sampleType: SampleType;
   isMultiRow: boolean;
-  usage?: 'info' | 'hidden' | 'reserved';
 }
 
 /** `ATR2_st_unknown` means that sample type is unrecognized */

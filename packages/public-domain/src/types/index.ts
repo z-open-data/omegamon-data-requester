@@ -18,7 +18,12 @@ export type { ApplicationMetadata, ApplicationTableMetadata } from './Applicatio
 export type { ColumnMetadata, EnumMap } from './ColumnMetadata';
 export { findEnumValue } from './ColumnMetadata';
 export { TIME_UNITS } from './ColumnMetadata';
-export { KNOWN_COLUMN_TYPES, WRITETIME_COLUMN_ID, writetimeColumnMetadata } from './ColumnMetadata';
+export {
+  KNOWN_COLUMN_TYPES,
+  WRITETIME_COLUMN_ID,
+  writetimeColumnMetadata,
+  RESTRICTED_COLUMN_USAGE,
+} from './ColumnMetadata';
 export type {
   AvailableTableMetadataPropertyArray,
   ColumnMetadataMap,

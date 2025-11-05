@@ -15,10 +15,9 @@ export type ApplicationMetadata = {
   tables: ApplicationTableMetadata[];
 };
 
-export type ApplicationTableMetadata = Pick<
-  TableMetadata,
-  'id' | 'name' | 'version' | 'sampleType' | 'isMultiRow' | 'usage'
->;
+export type ApplicationTableMetadata = Pick<TableMetadata, 'id' | 'name' | 'version' | 'sampleType' | 'isMultiRow'> & {
+  restriction?: 'unknown' | 'restricted';
+};
 
 // For situations -----------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------
