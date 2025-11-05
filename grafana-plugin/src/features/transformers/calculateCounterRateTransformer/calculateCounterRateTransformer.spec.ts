@@ -632,3 +632,107 @@ test('Handle invalid source field type', () => {
   ];
   expect(resultFrames).toEqual(expectedFrames);
 });
+
+test('Handle single row data', () => {
+  const resultFrames = transformFrames(
+    [
+      {
+        name: 'single row',
+        fields: [
+          {
+            name: 'time',
+            config: { displayName: 'nice time' },
+            type: FieldType.time,
+            values: [0],
+          },
+          {
+            name: 'counter',
+            config: { displayName: 'nice counter' },
+            type: FieldType.number,
+            values: [10],
+          },
+        ],
+        length: 1,
+      },
+    ],
+    'counter',
+    'time'
+  );
+  const expectedFrames: DataFrame[] = [
+    {
+      name: 'single row',
+      fields: [
+        {
+          name: 'time',
+          config: { displayName: 'nice time' },
+          type: FieldType.time,
+          values: [0],
+        },
+        {
+          name: 'counter',
+          config: { displayName: 'nice counter' },
+          type: FieldType.number,
+          values: [10],
+        },
+      ],
+      meta: {
+        notices: [
+          {
+            severity: 'warning',
+            text: "Calculate counter rate: Data with only one record can not be used for 'Calculate counter rate' transformation.",
+          },
+        ],
+      },
+      length: 1,
+    },
+  ];
+  expect(resultFrames).toEqual(expectedFrames);
+});
+
+test('Handle empty data', () => {
+  const resultFrames = transformFrames(
+    [
+      {
+        name: 'empty data',
+        fields: [
+          {
+            name: 'time',
+            config: { displayName: 'nice time' },
+            type: FieldType.time,
+            values: [],
+          },
+          {
+            name: 'counter',
+            config: { displayName: 'nice counter' },
+            type: FieldType.number,
+            values: [],
+          },
+        ],
+        length: 0,
+      },
+    ],
+    'counter',
+    'time'
+  );
+  const expectedFrames: DataFrame[] = [
+    {
+      name: 'empty data',
+      fields: [
+        {
+          name: 'time',
+          config: { displayName: 'nice time' },
+          type: FieldType.time,
+          values: [],
+        },
+        {
+          name: 'counter',
+          config: { displayName: 'nice counter' },
+          type: FieldType.number,
+          values: [],
+        },
+      ],
+      length: 0,
+    },
+  ];
+  expect(resultFrames).toEqual(expectedFrames);
+});

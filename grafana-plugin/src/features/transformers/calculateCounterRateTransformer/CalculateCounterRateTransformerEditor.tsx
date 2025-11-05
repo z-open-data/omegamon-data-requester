@@ -61,10 +61,6 @@ export function CalculateCounterRateTransformerEditor({
     );
   }
 
-  if (!frames.length) {
-    return <FieldValidationMessage>There is no data to transform.</FieldValidationMessage>;
-  }
-
   const { timeSelectableValues, numberSelectableValues } = framesToSelectableValues(frames);
 
   const preselectedTimeColumn = timeSelectableValues?.[0];

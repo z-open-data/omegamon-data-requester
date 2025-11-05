@@ -255,3 +255,45 @@ test('Handle frames without sourceField', () => {
   ];
   expect(resultFrames).toEqual(expectedFrames);
 });
+
+test('Handle single row data', () => {
+  expect(() => {
+    transformFrames(
+      [
+        {
+          fields: [
+            { name: 'time', config: {}, type: FieldType.time, values: [0] },
+            { name: 'delta', config: { displayName: 'nice delta' }, type: FieldType.number, values: [10] },
+          ],
+          length: 1,
+        },
+      ],
+      'delta'
+    );
+  }).toThrow("Data with only one record can not be used for 'Calculate delta' transformation.");
+});
+
+test('Handle empty data', () => {
+  const resultFrames = transformFrames(
+    [
+      {
+        fields: [
+          { name: 'time', config: {}, type: FieldType.time, values: [] },
+          { name: 'delta', config: { displayName: 'nice delta' }, type: FieldType.number, values: [] },
+        ],
+        length: 0,
+      },
+    ],
+    'delta'
+  );
+  const expectedFrames: DataFrame[] = [
+    {
+      fields: [
+        { name: 'time', config: {}, type: FieldType.time, values: [] },
+        { name: 'delta', config: { displayName: 'nice delta' }, type: FieldType.number, values: [] },
+      ],
+      length: 0,
+    },
+  ];
+  expect(resultFrames).toEqual(expectedFrames);
+});

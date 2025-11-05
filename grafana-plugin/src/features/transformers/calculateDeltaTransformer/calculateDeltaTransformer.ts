@@ -25,6 +25,14 @@ export function transformFrames(frames: DataFrame[], sourceColumn: string, delta
       );
     }
 
+    if (sourceField.values.length === 1) {
+      throw new Error(`Data with only one record can not be used for 'Calculate delta' transformation.`);
+    }
+
+    if (sourceField.values.length === 0) {
+      return frame;
+    }
+
     const values = sourceField.values.map((value, index, array) => {
       if (!Number.isFinite(value) || value < 0 || !Number.isFinite(array[index - 1]) || array[index - 1] < 0) {
         return undefined;
@@ -52,8 +60,8 @@ export function transformFrames(frames: DataFrame[], sourceColumn: string, delta
 function getCalculateDeltaTransformation(): DataTransformerInfo<CalculateDeltaTransformerOptions> {
   return {
     id: `omegamon-calculate-delta-transformation`,
-    name: `OMEGAMON. Calculate delta`,
-    description: `Calculate delta for rows`,
+    name: `OMEGAMON. 'Calculate delta'`,
+    description: `'Calculate delta' for rows`,
     defaultOptions: {},
     operator: (optionsOfUnknownVersion: WithOptionalVersion) => {
       const { sourceColumn, deltaColumnName } =

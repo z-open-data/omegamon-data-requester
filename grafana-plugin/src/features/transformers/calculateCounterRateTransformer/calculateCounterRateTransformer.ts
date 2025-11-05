@@ -98,6 +98,15 @@ export function transformFrames(
       return frame;
     }
 
+    if (sourceField.values.length === 1) {
+      addNotice(`Data with only one record can not be used for 'Calculate counter rate' transformation.`, frame);
+      return frame;
+    }
+
+    if (sourceField.values.length === 0) {
+      return frame;
+    }
+
     const { label: sourceFieldBaseDisplayName } = fieldToSelectableValue(sourceField);
 
     if (sourceField.type !== FieldType.number) {
@@ -149,7 +158,7 @@ function getCalculateCounterRateTransformation(): DataTransformerInfo<CalculateC
   return {
     id: `omegamon-calculate-counter-rate-transformation`,
     name: `OMEGAMON. Counter rate calculation`,
-    description: `Calculate Counter rate for rows`,
+    description: `Calculate counter rate for rows`,
     defaultOptions: {},
     operator: (optionsOfUnknownVersion: WithOptionalVersion) => {
       const { sourceColumn, timeColumn, counterRateColumnName } =

@@ -1,7 +1,7 @@
 import { css } from '@emotion/css';
 import { FieldType, GrafanaTheme2, TransformerUIProps } from '@grafana/data';
-import { FieldValidationMessage, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
-import { uniqBy } from 'lodash';
+import { Alert, FieldValidationMessage, InlineField, InlineFieldRow, Input, Select, useStyles2 } from '@grafana/ui';
+import { every, filter, isEmpty, some, uniqBy } from 'lodash';
 import React from 'react';
 
 import { GrafanaThemeProvider } from 'datasource/components';
@@ -18,8 +18,20 @@ function getCalculateDeltaTransformerStyles(theme: GrafanaTheme2) {
     alignItems: 'center',
   });
 
+  const alertRow = css({
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing(0, 0.5, 0.5, 0),
+  });
+
+  const alert = css({
+    marginBottom: 0,
+  });
+
   return {
     row: container,
+    alertRow,
+    alert,
   };
 }
 
@@ -36,25 +48,17 @@ export function CalculateDeltaTransformerEditor({
     options = updateCalculateDeltaTransformerOptionsToLatestVersion(optionsOfUnknownVersion);
   } catch (error) {
     return (
-      <FieldValidationMessage>{`Error while converting 'calculate delta' transformation options to latest version: ${
+      <FieldValidationMessage>{`Error while converting 'Calculate delta' transformation options to latest version: ${
         error instanceof Error ? error.message : error
       }`}</FieldValidationMessage>
     );
   }
 
-  if (!frames.length) {
-    return <FieldValidationMessage>There is no data to transform.</FieldValidationMessage>;
-  }
-
-  const allHaveTimeField = frames.every((frame) => frame.fields.some((field) => field.type === FieldType.time));
-
-  if (!allHaveTimeField) {
-    return (
-      <FieldValidationMessage>
-        {"Not every frame has a time field, 'calculate delta' transformation is only supported for timeseries"}
-      </FieldValidationMessage>
-    );
-  }
+  const framesWithFields = filter(frames, (frame) => !isEmpty(frame.fields));
+  // Show error only when we have frames with fields and not all of those frames have a time field
+  const showTimeFieldError =
+    !isEmpty(framesWithFields) &&
+    !every(framesWithFields, (frame) => some(frame.fields, (field) => field.type === FieldType.time));
 
   const numberFields = frames.flatMap(({ fields }) => fields).filter(({ type }) => type === FieldType.number);
   const uniqueNumberFields = uniqBy(numberFields, (field) => field.name);
@@ -66,6 +70,15 @@ export function CalculateDeltaTransformerEditor({
   return (
     <GrafanaThemeProvider>
       <div>
+        {showTimeFieldError && (
+          <div className={styles.alertRow}>
+            <Alert
+              className={styles.alert}
+              title="Not every frame has a time field, 'Calculate delta' transformation is only supported for timeseries"
+            />
+          </div>
+        )}
+
         <InlineFieldRow className={styles.row}>
           <InlineField
             label={'Source attribute'}
