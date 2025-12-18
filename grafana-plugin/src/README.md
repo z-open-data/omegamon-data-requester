@@ -4,8 +4,8 @@ IBM Z OMEGAMON Data Requester is a plug-in that seamlessly integrates OMEGAMON m
 
 ## Documentation
 
-For instructions about installing the plugin, you can refer to [Installation of OMEGAMON Data Requester](https://www.ibm.com/docs/en/zodr?topic=requester-installation-omegamon-data).
+For instructions about installing the plugin, you can refer to [Installation of OMEGAMON Data Requester](https://www.ibm.com/docs/en/zomui/2.1.0?topic=requester-installing-linux-amd64).
 
-For information about starter dashboards refer to the [Dashboards overview](https://www.ibm.com/docs/en/zodr?topic=requester-dashboards-overview) documentation.
+For information about starter dashboards refer to the [Dashboards overview](https://www.ibm.com/docs/en/zomui/2.1.0?topic=dashboards) documentation.
 
-For more information about IBM Z OMEGAMON Data Requester refer to the [IBM Z OMEGAMON Data Requester](https://www.ibm.com/docs/en/zodr?topic=z-omegamon-data-requester) documentation.
+For more information about IBM Z OMEGAMON Web UI refer to the [IBM Z OMEGAMON Web UI](https://www.ibm.com/docs/en/zomui/2.1.0?topic=z-omegamon-web-ui) documentation.
